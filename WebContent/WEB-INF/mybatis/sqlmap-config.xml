@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+    PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<!-- 
+	typeAliases 설정
+	  - 타입 별칭 : 자바 타입에 대한 좀더 짧은 이름
+	  - XML 설정에서만 사용되며, 타이핑을 줄이기 위해 존재함		
+	  - @Alias 애노테이션을 사용한다면, 이 애노테이션에서 지정한 값이 별칭으로 사용
+	  - 사용 예) @Alias("author")
+				public class Author {
+   				 ...
+				}
+-->
+<configuration>
+	<typeAliases>
+		<typeAlias type="com.jsnote.domain.PhoneBook" alias="phone"/>
+	</typeAliases>
+</configuration>

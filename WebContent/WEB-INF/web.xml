@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+  <display-name>PhoneBook_SpringMVCMyBatis</display-name>
+  
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+  
+  <filter>
+    <filter-name>CharacterEncodingFilter</filter-name>
+    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+    <init-param>
+      <param-name>encoding</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
+    <init-param>
+      <param-name>forceEncoding</param-name>
+      <param-value>true</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>CharacterEncodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  
+  <!-- listener 태그를 지정하면 웹 애플리케이션이 시작될 때 자동으로 루트 웹애플리케이션을 만듦
+  	   디폴트 설정파일은 applicationContext.xml이며, 파일 위치는 WEB-INF/임   -->
+  <listener>
+  	<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  <context-param>
+  	<param-name>contextConfigLocation</param-name>
+  	<param-value>/WEB-INF/spring-oracle.xml</param-value>
+  </context-param>
+  
+  <!-- 
+  	  DispatcherServlet 설정 
+  	  - DispatcherServlet은 클라이언트의 요청을  전달받은 서블릿으로
+  	     컨트롤러나 뷰와 같은 스프링 MVC의 구성 요소를 이용하여 클라이언트에게 서비스를 제공함
+  -->
+  <servlet>
+    <servlet-name>spring</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+ 
+  <!-- 
+                 컨텍스트의 웹 애플리케이션이 톰캣 서버에 의해 인식되는 시점
+   	   - 음의 정수인 경우: 그 서블릿에 접근될 때 
+	   - 0 또는 양의 정수인 경우 : 그 서블릿이 배치(deploy)될 때
+	   (즉, 컨텍스트가 인식될 때)
+       - 숫자가 작은 것 부터 먼저 로딩됨
+   -->
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  
+  <!-- 
+                   서블릿 매핑 정보 추가
+  	   - /로 들어오는 클라이언트의 요청을 DispatcherServlet이 처리하도록 설정
+  	   - restFul 연습을 위해 접두사 uri 패턴을 활용	
+  -->
+  <servlet-mapping>
+    <servlet-name>spring</servlet-name>
+    <url-pattern>/</url-pattern>
+  </servlet-mapping> 
+  
+</web-app>

@@ -1,0 +1,42 @@
+<개요>
+1. 프로젝트 명 : PhoneBook_SpringMVCMyBatis
+2. 작성자 : 이지수
+3. 작성일 : 2013.09.02
+
+<소개>
+이 프로젝트는 스프링 3.0 프로그래밍을 공부하면서 만들어 본 간단한 전화번호부입니다.
+스프링 MVC에 대한 개념을 익히고, ORM(MyBatis를 활용)과의 연동을 학습할 수 있습니다.
+다양한 어노테이션을 사용하기 위해 어떤 설정을 해야 하는지 학습할 수 있습니다.
+restFul 방식과  Validator에 대한 개념 및 실제 구현 내용을 파악할 수 있습니다.
+- restFul의 경우 Ant 경로 패턴을 구현해보았는데.. 추후 좀 더 공부해서 설정을 다시 할 예정입니다. 
+※참고 사이트 : http://www.raistudies.com/spring/spring-mvc/spring-mvc-3-crud-example-with-mybatis-3/
+
+<작업 환경>
+Eclipse IDE - Dynamic Web project
+JRE 7.0
+Apache Tomcat 7.0
+MySql 5.1
+MyBatis 3.04
+Spring 3.1.0 Release
+
+<테스트 순서 및 방법>
+
+1. 이클립스에 프로젝트를 import 하십시오.
+- lib 폴더에 jar 파일을 확인하십시오.(총 19개 jar 파일)
+- 프로젝트 프로퍼티에서 톰캣 경로를 본인 컴퓨터에 맞게 설정하십시오. 
+
+2. sql 폴더에 있는 PhoneBook.sql로 테이블을 만드십시오. 
+- Database Connection으로 new Connection Profile을 Mysql로 만드십시오.
+- sql 파일에 있는 "PhoneBook" 테이블을 생성하십시오.
+- 테스트 자료는 insert 하지 않으셔도 상관 없습니다.
+
+3. WEB-INF폴더에 있는 jdbc.properties 파일의 데이터 베이스 정보를 본인 설정으로 변경하십시오. 
+- url=jdbc:mysql://localhost:3306/mysql -> mysql 부분
+- username=root -> root 부분
+- password=1234 -> 1234 부분
+
+4. WebContent폴더에 있는 index.jsp 를  run하십시오(톰캣 서버로)
+- "Hello Spring Web MVC MyBatis PhoneBook" 헤드라인이 나오면 됩니다.
+- "Enter the PhoneBook"을 클릭하시면 전화번호부 서비스를 이용하실 수 있습니다.
+
+5. 전화번호부 새로 등록, 목록 보기, 수정, 삭제 등의 서비스를 테스트해보십시오.

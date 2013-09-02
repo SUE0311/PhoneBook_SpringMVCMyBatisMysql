@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jsnote.persistence.PhoneService">
+	
+	<!-- table 속성와  bean 속성과의 매핑 -->
+	<resultMap id="result" type="phone">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="tel" column="tel"/>
+        <result property="email" column="email"/>
+        <result property="birthday" column="birthday"/>
+    </resultMap>
+	
+	<select id="listPhone" resultMap="result">  
+		SELECT * FROM PhoneBook; 
+	</select>
+	
+	<select id="updatePhone" resultMap="result">  
+		SELECT * FROM PhoneBook where id = #{id}; 
+	</select>
+	
+	<insert id="addPhoneOk" parameterType="phone">
+		INSERT INTO PhoneBook (id,name,tel,email,birthday) 
+    	VALUE (id,#{name},#{tel},#{email},#{birthday})
+	</insert>
+	
+	<update id="updatePhoneOk" parameterType="phone"> 
+  		UPDATE PhoneBook
+  		SET
+  			name = #{name},  
+			tel = #{tel},  
+			email = #{email},  
+			birthday = #{birthday} 
+  		where id = #{id} 
+	</update>
+	
+	<delete id="deletePhone" parameterType="int">
+    	DELETE FROM PhoneBook
+    	WHERE id = #{id}
+    </delete>
+</mapper>

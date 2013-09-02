@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/beans 
+			http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+			http://www.springframework.org/schema/tx 
+			http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+			http://www.springframework.org/schema/context
+			http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	   		">
+	   		
+	<!-- 태그를 사용한 외부 프로퍼티 사용 -->
+	<context:property-placeholder location="/WEB-INF/jdbc.properties,/WEB-INF/mybatis/mybatis.properties" />
+
+	<!-- 
+		선언적 트랜잭션 처리 
+		- 설정 파일이나 어노테이션을 이용해서 트랜잭션 범위, 롤백 규칙 등을 정의
+		- @Transactional 어노테이션이 적용된 스프링 빈 적용을 위해 태그 설정
+		- transaction-manager : 사용할 PlatformTransactionManager 빈의 이름
+		  (기본값 :transaction-manager)
+	-->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<!--
+		DataSource 설정
+		- c3p0 커넥션 풀 라이브러리 사용
+		- ComboPooledDataSource에서 사용디는 프로퍼티 참고 사이트
+		  http://www.mchange.com/projects/c3p0 	
+	 -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close" 
+		p:driverClass="${driverClassName}"
+		p:jdbcUrl="${url}" 
+		p:user="${username}" 
+		p:password="${password}"
+		p:acquireIncrement="10"
+		p:idleConnectionTestPeriod="60" 
+		p:maxPoolSize="100"
+		p:maxStatements="50" 
+		p:minPoolSize="10" />
+
+	<!--
+		트랜잭션 설정
+		- JDBC, Mybatis와 같은 JDBC를 이용해서 데이터베이스 연동을 처리할 경우
+		- DataSourceTransactionManager를 트랜잭션 관리자로 사용
+		- 참고 : 트랜잭션은 성공적으로 처리되거나 또는 
+		하나라도 실패하면 완전히 실패 처리해야 할 경우 사용됨
+	 -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+		p:dataSource-ref="dataSource" />
+		
+	<!-- 
+    	Mybatis 설정
+    	- Mybatis를 사용하기 위해 SqlSessionFactoryBean 클래스를 빈 등록
+    	- configLocation의 값 sqlmap-config.xml에서 typeAliases 설정 
+    	- MapperFactoryBean을 사용하면 configLocation이 무시된다..(?) 
+    	- 더 공부 필요!!
+    -->	
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="configLocation" value="WEB-INF/mybatis/sqlmap-config.xml" />
+    </bean>
+
+	<!-- 
+    	sql mapper 설정
+    	- MapperInterfacePackage=com.jsnote.persistence
+    	  (CRUD sql문이 id와 매핑되어 있음)
+    	- mapper를 검색하고 Autowire로 이동 (?) 
+    	- 더 공부 필요!!
+     -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="${MapperInterfacePackage}" />
+    </bean>
+    
+</beans>

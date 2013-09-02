@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
+	
+	<!-- 
+		validator 클래스의 메시지 변수와 매핑된 메세지 프로퍼티 파일 이용을 위한
+	 	ReloadableResourceBundleMessageSource 구현체를 빈으로 등록
+	-->
+	<bean id="messageSource" 
+			class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basename" value="/WEB-INF/messages" />
+	</bean>
+	
+	<!-- 
+		빈으로 배포할 @Components에 대한 프로그램의 클래스 경로 검색
+		*  @Autowired와 <context:component-scan> 특별한 참고 내용
+		- annotation을 통한 injection은 XML로 설정되는 것 보다 먼저 수행됨
+		- annotation을 쓸건지 XML에서 설정할건지 룰을 정하는 게 좋음
+		(출처 - http://entireboy.egloos.com/4643335)
+	-->
+	<context:component-scan base-package="com.jsnote" />
+	
+	<!-- 
+		DispatcherServlet이 사용하는 스프링 설정 파일에 
+		컨트롤러 클래스 등록(Spring 3.0부터 가능)
+	-->
+	<mvc:annotation-driven />
+	
+	<!-- 
+		설정파일에 ViewResolver 설정 추가 
+		DispartcherServlet은 뷰 이름과 매칭되는 뷰 구현체를 찾기 위해 ViewResolver 사용함
+		JSP를 뷰 기술로 사용할 경우 InternalResourceViewResolver 구현체를 빈으로 등록
+	-->
+	<bean id="internalResourceViewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass">
+			<value>org.springframework.web.servlet.view.JstlView</value>
+		</property>
+		<property name="prefix" value="/WEB-INF/jsp/"/>
+		<property name="suffix" value=".jsp"/>
+	</bean>
+
+	<!-- 
+		설정파일에 데이터베이스 연동 지원 파일 import jdbc-context.xml 중요 내용 
+		1. 커넥션 풀 API c3p0 라이브러리를 사용한 DataSource 설정
+		2. JDBC 기반 트랜잭션 관리자 설정
+		3. SqlSessionFactoryBean을 이용한 myBatis 연동
+	 -->	
+	<import resource="spring-oracle.xml"/>
+	
+</beans>
